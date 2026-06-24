@@ -10,37 +10,58 @@ def nome_do_programa():
 def exibir_opcoes():
     print('1. Cadastrar restaurante')
     print('2. Listar restaurantes')
-    print('3. Ativar restaurante')
+    print('3. Alterar status do restaurante')
     print('4. Sair\n')
 
 def cadastrar_restaurante():
     subtitulo('Cadastrar restaurante')
-    nome = input('Digite o nome do restaurante: ')
+    nome_restaurante = input('Digite o nome do restaurante: ')
     categoria = input('Digite a categoria do restaurante: ')
-    if nome in [restaurante['nome'] for restaurante in restaurantes]:
-        print(f'\nRestaurante {nome} já está cadastrado!\n')
-        reset()
-    elif not nome or not categoria:
+    if nome_restaurante in [restaurante['nome'] for restaurante in restaurantes]:
+        print(f'\nRestaurante {nome_restaurante} já está cadastrado!\n')
+        voltar_menu()
+    elif not nome_restaurante or not categoria:
         print('\nNome e categoria são obrigatórios!\n')
-        reset()
+        voltar_menu()
     else:
-        restaurantes.append({'nome': nome, 'categoria': categoria, 'ativo': False})
-        print(f'\nRestaurante {nome} cadastrado com sucesso!')
-        reset()
+        restaurantes.append({'nome': nome_restaurante, 'categoria': categoria, 'ativo': False})
+        print(f'\nRestaurante {nome_restaurante} cadastrado com sucesso!')
+        voltar_menu()
 
 def listar_restaurantes():
     subtitulo('Restaurantes cadastrados')
     if not restaurantes:
         print('Nenhum restaurante cadastrado.\n')
     else:
+        print(f'{"Nome do Restaurante".ljust(23)} | {"Categoria".ljust(20)} | Status')
+        print('-' * 60)
         for i, restaurante in enumerate(restaurantes):
             nome_restaurantes = restaurante['nome']
             categorias_restaurantes = restaurante['categoria']
-            ativo = restaurante['ativo']
-            print(f'{i+1}. {nome_restaurantes} - {categorias_restaurantes} - {"Ativo" if ativo else "Inativo"}')
-    reset()
+            ativo = 'Ativado' if restaurante['ativo'] else 'Desativado'
+            print(f'{i+1}. {nome_restaurantes.ljust(20)} | {categorias_restaurantes.ljust(20)} | {ativo}')
+    voltar_menu()
 
-def reset():
+def alterar_status_restaurante():
+    subtitulo('Alterar status do restaurante')
+    if not restaurantes:
+        print('Nenhum restaurante cadastrado.\n')
+        voltar_menu()
+    else:
+        nome_restaurante = input('Digite o nome do restaurante que deseja alterar o status: ')
+        restaurante_encontrado = False
+
+        for restaurante in restaurantes:
+            if restaurante['nome'] == nome_restaurante:
+                restaurante['ativo'] = not restaurante['ativo']
+                ativo = "Ativado" if restaurante['ativo'] else "Desativado"
+                print(f'\nRestaurante {nome_restaurante} agora está {ativo}!')
+                restaurante_encontrado = True
+        if not restaurante_encontrado:
+            print(f'\nRestaurante {nome_restaurante} não encontrado!')
+    voltar_menu()
+
+def voltar_menu():
     input('\nPressione qualquer tecla para continuar...')
     main()
 
@@ -49,12 +70,15 @@ def finalizar_programa():
 
 def subtitulo(texto):
     os.system('cls')
+    linha = '-' * len(texto)
+    print(linha)
     print(texto)
+    print(linha)
     print()
 
 def opcao_invalida():
     subtitulo('Opção inválida')
-    reset()
+    voltar_menu()
 
 def escolher_opcao():
     try:
@@ -66,7 +90,7 @@ def escolher_opcao():
             case 2:
                 listar_restaurantes()
             case 3:
-                print('Ativar restaurante')
+                alterar_status_restaurante()
             case 4:
                 finalizar_programa()
             case _:
