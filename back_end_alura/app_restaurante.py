@@ -1,6 +1,8 @@
 import os
 
-restaurantes = ['Pizza','hamburguer']
+restaurantes = [{'nome': 'Pizza', 'categoria': 'Italiana', 'ativo': False}, 
+                {'nome': 'Hamburguer', 'categoria': 'Americana', 'ativo': False}, 
+                {'nome': 'Sushi', 'categoria': 'Japonesa', 'ativo': False}]
 
 def nome_do_programa():
     print('Sabor expresso\n')
@@ -14,26 +16,32 @@ def exibir_opcoes():
 def cadastrar_restaurante():
     subtitulo('Cadastrar restaurante')
     nome = input('Digite o nome do restaurante: ')
-    if nome in restaurantes:
+    categoria = input('Digite a categoria do restaurante: ')
+    if nome in [restaurante['nome'] for restaurante in restaurantes]:
         print(f'\nRestaurante {nome} já está cadastrado!\n')
         reset()
+    elif not nome or not categoria:
+        print('\nNome e categoria são obrigatórios!\n')
+        reset()
     else:
-        restaurantes.append(nome)
-        print(f'\nRestaurante {nome} cadastrado com sucesso!\n')
+        restaurantes.append({'nome': nome, 'categoria': categoria, 'ativo': False})
+        print(f'\nRestaurante {nome} cadastrado com sucesso!')
         reset()
 
 def listar_restaurantes():
     subtitulo('Restaurantes cadastrados')
-    if len(restaurantes) == 0:
-        print('Nenhum restaurante cadastrado.')
+    if not restaurantes:
+        print('Nenhum restaurante cadastrado.\n')
     else:
         for i, restaurante in enumerate(restaurantes):
-            print(f'{i + 1}. {restaurante}')
-    print('')
+            nome_restaurantes = restaurante['nome']
+            categorias_restaurantes = restaurante['categoria']
+            ativo = restaurante['ativo']
+            print(f'{i+1}. {nome_restaurantes} - {categorias_restaurantes} - {"Ativo" if ativo else "Inativo"}')
     reset()
 
 def reset():
-    input('Pressione qualquer tecla para continuar...')
+    input('\nPressione qualquer tecla para continuar...')
     main()
 
 def finalizar_programa():
@@ -45,7 +53,8 @@ def subtitulo(texto):
     print()
 
 def opcao_invalida():
-    subtitulo('Opção inválida\n')
+    subtitulo('Opção inválida')
+    reset()
 
 def escolher_opcao():
     try:
