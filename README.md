@@ -1,2 +1,2 @@
-# GUIs
+# Projetos
 Projetos de Aula
