@@ -12,8 +12,7 @@ def exibir_opcoes():
     print('4. Sair\n')
 
 def cadastrar_restaurante():
-    os.system('cls')
-    print('Cadastrar restaurante\n')
+    subtitulo('Cadastrar restaurante')
     nome = input('Digite o nome do restaurante: ')
     if nome in restaurantes:
         print(f'\nRestaurante {nome} já está cadastrado!\n')
@@ -24,8 +23,7 @@ def cadastrar_restaurante():
         reset()
 
 def listar_restaurantes():
-    os.system('cls')
-    print('Listar restaurantes\n')
+    subtitulo('Restaurantes cadastrados')
     if len(restaurantes) == 0:
         print('Nenhum restaurante cadastrado.')
     else:
@@ -39,13 +37,15 @@ def reset():
     main()
 
 def finalizar_programa():
+    subtitulo('Encerrando o programa')
+
+def subtitulo(texto):
     os.system('cls')
-    print('Encerrando o programa')
+    print(texto)
+    print()
 
 def opcao_invalida():
-    os.system('cls')
-    print('Opção inválida\n')
-    reset()
+    subtitulo('Opção inválida\n')
 
 def escolher_opcao():
     try:
